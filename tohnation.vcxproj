@@ -130,6 +130,7 @@
     <ClInclude Include="AutoDeliver.h" />
     <ClInclude Include="DataManager.h" />
     <ClInclude Include="Drone.h" />
+    <ClInclude Include="UserInterface.h" />
     <ClInclude Include="Package.h" />
     <ClInclude Include="Time.h" />
   </ItemGroup>
@@ -137,6 +138,7 @@
     <ClCompile Include="AutoDeliver.cpp" />
     <ClCompile Include="DataManager.cpp" />
     <ClCompile Include="Drone.cpp" />
+    <ClCompile Include="UserInterface.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Package.cpp" />
     <ClCompile Include="Time.cpp" />
