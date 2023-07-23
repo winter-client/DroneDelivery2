@@ -223,7 +223,7 @@ void UserInterface::generateAndDisplayPlan(AutoDeliver& autoDeliver) {
     int planChoice;
     cout << "===== Display and Plan Options =====" << endl;
     cout << "1. By Drone Capacity" << endl;
-    cout << "2. Optimised plan" << endl;
+    cout << "2. By Time Plan" << endl;
     cout << "3. Display NotAtFullLoadCapacity" << endl;
     cout << "4. Display NotAssignedToDrone" << endl;
     cout << "Enter your choice: ";
