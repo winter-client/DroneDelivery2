@@ -1,3 +1,1 @@
-P1 StopA 12:30
-P2 StopB 17:00
-P5 StopA 12:30
+P1 StopA 12 0

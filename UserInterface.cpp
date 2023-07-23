@@ -11,17 +11,41 @@ void UserInterface::start() {
 
     string droneFilePath, packageFilePath;
 
-    cout << "Enter the file path for drones: ";
-    cin >> droneFilePath;
-    if (!isPathValid(droneFilePath) || !fileExists(droneFilePath)) {
-        std::cerr << "Error: Invalid or not found drones.txt file." << endl;
+    int maxAttempts = 2;
+    int droneAttempts = 0;
+    int packageAttempts = 0;
+
+    while (droneAttempts < maxAttempts) {
+        cout << "Enter the file path for drones: ";
+        cin >> droneFilePath;
+        if (isPathValid(droneFilePath) && fileExists(droneFilePath)) {
+            break;
+        }
+        else {
+            cerr << "Error: Invalid or not found drones.txt file." << endl;
+            droneAttempts++;
+        }
+    }
+
+    if (droneAttempts >= maxAttempts) {
+        cerr << "Error: Exceeded maximum attempts for drone file." << endl;
         return;
     }
 
-    cout << "Enter the file path for packages: ";
-    cin >> packageFilePath;
-    if (!isPathValid(packageFilePath) || !fileExists(packageFilePath)) {
-        cerr << "Error: Invalid or not found packages.txt file." << endl;
+    while (packageAttempts < maxAttempts) {
+        cout << "Enter the file path for packages: ";
+        cin >> packageFilePath;
+        if (isPathValid(packageFilePath) && fileExists(packageFilePath)) {
+            break;
+        }
+        else {
+            cerr << "Error: Invalid or not found packages.txt file." << endl;
+            packageAttempts++;
+        }
+    }
+
+    if (packageAttempts >= maxAttempts) {
+        cerr << "Error: Exceeded maximum attempts for package file." << endl;
         return;
     }
 

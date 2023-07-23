@@ -26,13 +26,13 @@ void AutoDeliver::readFiles(const string& droneFilePath, const string& packageFi
 
     while (droneFile >> droneId >> destination >> hours >> minutes >> capacityTypeStr) {
         CapacityType capacityType;
-        if (capacityTypeStr == "MINI") {
+        if (capacityTypeStr == "2") {
             capacityType = CapacityType::MINI;
         }
-        else if (capacityTypeStr == "MAXI") {
+        else if (capacityTypeStr == "5") {
             capacityType = CapacityType::MAXI;
         }
-        else if (capacityTypeStr == "HEAVY") {
+        else if (capacityTypeStr == "10") {
             capacityType = CapacityType::HEAVY;
         }
         else {
@@ -44,6 +44,7 @@ void AutoDeliver::readFiles(const string& droneFilePath, const string& packageFi
         drones.push_back(newDrone);
 
         // Debug output for the added drone
+        cout << "========== loaded drone data ==========" << endl;
         cout << "Added Drone: ID=" << newDrone.getId() << ", Destination=" << newDrone.getDestination()
             << ", Time=" << newDrone.getTiming().toString() << ", Capacity=" << static_cast<int>(newDrone.getCapacityType()) << endl;
     }
@@ -68,6 +69,7 @@ void AutoDeliver::readFiles(const string& droneFilePath, const string& packageFi
         packages.push_back(newPackage);
 
         // Debug output for the added package
+        cout << "========== loaded package data ==========" << endl;
         cout << "Added Package: ID=" << newPackage.getId() << ", Destination=" << newPackage.getDestination()
             << ", Time=" << newPackage.getTiming().toString() << endl;
     }
@@ -273,7 +275,7 @@ void AutoDeliver::writeDronesToFile(const string& droneFilePath, WriteMode mode)
         // Convert the drone data to a string format for comparison
         ostringstream oss;
         oss << drone.getId() << " " << drone.getDestination() << " "
-            << drone.getTiming().toString() << " ";
+            << drone.getTiming().getHours() << " " << drone.getTiming().getMinutes() << " "; // Removed semicolon for the time
 
         switch (drone.getCapacityType()) {
         case CapacityType::MINI:
@@ -346,7 +348,7 @@ void AutoDeliver::writePackagesToFile(const string& packageFilePath, WriteMode m
         // Convert the package data to a string format for comparison
         ostringstream oss;
         oss << package.getId() << " " << package.getDestination() << " "
-            << package.getTiming().toString();
+            << package.getTiming().getHours() << " " << package.getTiming().getMinutes(); // Removed semicolon for the time
 
         string packageDataString = oss.str();
 
@@ -367,6 +369,7 @@ void AutoDeliver::writePackagesToFile(const string& packageFilePath, WriteMode m
 
     packageFile.close();
 }
+
 
 
 void AutoDeliver::addDrone(const Drone& newDrone) {
