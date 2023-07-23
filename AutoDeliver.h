@@ -22,8 +22,9 @@ enum class WriteMode {
 
 class AutoDeliver {
 private:
-    std::vector<Drone> drones;
-    std::vector<Package> packages;
+    vector<Drone> drones;
+    vector<Package> packages;
+    vector<Package> unassignedPackages;
 
 public:
     AutoDeliver();
@@ -43,7 +44,7 @@ public:
     void editPackage(const string& packageId, const Package& updatedPackage);
     void deletePackage(const string& packageId);
 
-    void generateMatchingPlan_OptimizeCapacity();
+    void generateMatchingPlan_OptimizeCapacity(const std::string& outputFilePath);
     void generateMatchingPlan_MinimiseDrones();
 
     void displayDrones_NotAtFullLoadCapacity();

@@ -1,4 +1,5 @@
 // DataManager.cpp
+
 #include "DataManager.h"
 
 DataManager::DataManager(const std::string& id, const std::string& destination, int hours, int minutes)

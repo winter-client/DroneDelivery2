@@ -1,3 +1,5 @@
+// UserInterface.h
+
 #ifndef USERINTERFACE_H
 #define USERINTERFACE_H
 
@@ -24,7 +26,8 @@ public:
 
     void run() {
         start();
-    }
+    };
 
 };
+
 #endif // USERINTERFACE_H

@@ -65,5 +65,8 @@
       <Filter>Source Files</Filter>
     </Text>
     <Text Include="matching_plan.txt" />
+    <Text Include="capacity_plan.txt">
+      <Filter>Source Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

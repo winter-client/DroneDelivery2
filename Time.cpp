@@ -1,4 +1,7 @@
 // Time.cpp
+
+using namespace std;
+
 #include "Time.h"
 
 Time::Time(int hours, int minutes) : hours(hours), minutes(minutes) {}
@@ -7,9 +10,9 @@ bool Time::isValidTime() const {
     return (hours >= 0 && hours < 24) && (minutes >= 0 && minutes < 60);
 }
 
-std::string Time::toString() const {
-    std::ostringstream oss;
-    oss << std::setfill('0') << std::setw(2) << hours << ":" << std::setw(2) << minutes;
+string Time::toString() const {
+    ostringstream oss;
+    oss << setfill('0') << setw(2) << hours << ":" << setw(2) << minutes;
     return oss.str();
 }
 

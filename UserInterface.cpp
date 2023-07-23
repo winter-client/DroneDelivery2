@@ -1,24 +1,28 @@
-#include "UserInterface.h"
 #include <iostream>
 #include <fstream>
+#include <string>
+
+using namespace std;
+
+#include "UserInterface.h"
 
 void UserInterface::start() {
     AutoDeliver autoDeliver;
 
     // Load data from files
-    std::string droneFilePath, packageFilePath;
+    string droneFilePath, packageFilePath;
 
-    std::cout << "Enter the file path for drones: ";
-    std::cin >> droneFilePath;
+    cout << "Enter the file path for drones: ";
+    cin >> droneFilePath;
     if (!isPathValid(droneFilePath) || !fileExists(droneFilePath)) {
-        std::cerr << "Error: Invalid or not found drones.txt file." << std::endl;
+        std::cerr << "Error: Invalid or not found drones.txt file." << endl;
         return;
     }
 
-    std::cout << "Enter the file path for packages: ";
-    std::cin >> packageFilePath;
+    cout << "Enter the file path for packages: ";
+    cin >> packageFilePath;
     if (!isPathValid(packageFilePath) || !fileExists(packageFilePath)) {
-        std::cerr << "Error: Invalid or not found packages.txt file." << std::endl;
+        cerr << "Error: Invalid or not found packages.txt file." << endl;
         return;
     }
 
@@ -27,18 +31,18 @@ void UserInterface::start() {
     // User interface loop
     int choice;
     do {
-        std::cout << "===== Auto Deliver System =====" << std::endl;
-        std::cout << "1. Add Drone" << std::endl;
-        std::cout << "2. Edit Drone" << std::endl;
-        std::cout << "3. Delete Drone" << std::endl;
-        std::cout << "4. Add Package" << std::endl;
-        std::cout << "5. Edit Package" << std::endl;
-        std::cout << "6. Delete Package" << std::endl;
-        std::cout << "7. Generate and display plan" << std::endl;
-        std::cout << "8. Save plan" << std::endl;
-        std::cout << "0. Exit" << std::endl;
-        std::cout << "Enter your choice: ";
-        std::cin >> choice;
+        cout << "===== Auto Deliver System =====" << endl;
+        cout << "1. Add Drone" << endl;
+        cout << "2. Edit Drone" << endl;
+        cout << "3. Delete Drone" << endl;
+        cout << "4. Add Package" << endl;
+        cout << "5. Edit Package" << endl;
+        cout << "6. Delete Package" << endl;
+        cout << "7. Planning options" << endl;
+        cout << "8. Save plan" << endl;
+        cout << "0. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> choice;
 
         switch (choice) {
         case 1:
@@ -66,39 +70,39 @@ void UserInterface::start() {
             savePlan(autoDeliver);
             break;
         case 0:
-            std::cout << "Exiting the Auto Deliver System." << std::endl;
+            cout << "Exiting the Auto Deliver System." << endl;
             break;
         default:
-            std::cout << "Invalid choice. Please try again." << std::endl;
+            cout << "Invalid choice. Please try again." << endl;
             break;
         }
 
-        std::cout << std::endl;
+        cout << endl;
     } while (choice != 0);
 }
 
-bool UserInterface::fileExists(const std::string& filePath) {
+bool UserInterface::fileExists(const string& filePath) {
     std::ifstream file(filePath);
     return file.good();
 }
 
-bool UserInterface::isPathValid(const std::string& path) {
-    std::ifstream file(path);
+bool UserInterface::isPathValid(const string& path) {
+    ifstream file(path);
     return file.good();
 }
 
 void UserInterface::addDrone(AutoDeliver& autoDeliver) {
-    std::string id, destination;
+    string id, destination;
     int hours, minutes;
     int capacityTypeChoice;
-    std::cout << "Enter Drone ID: ";
-    std::cin >> id;
-    std::cout << "Enter Destination: ";
-    std::cin >> destination;
-    std::cout << "Enter Time (hours minutes): ";
-    std::cin >> hours >> minutes;
-    std::cout << "Choose Capacity Type (1: Mini, 2: Maxi, 3: Heavy): ";
-    std::cin >> capacityTypeChoice;
+    cout << "Enter Drone ID: ";
+    cin >> id;
+    cout << "Enter Destination: ";
+    cin >> destination;
+    cout << "Enter Time (hours minutes): ";
+    cin >> hours >> minutes;
+    cout << "Choose Capacity Type (1: Mini, 2: Maxi, 3: Heavy): ";
+    cin >> capacityTypeChoice;
     CapacityType capacityType;
     switch (capacityTypeChoice) {
     case 1:
@@ -111,7 +115,7 @@ void UserInterface::addDrone(AutoDeliver& autoDeliver) {
         capacityType = CapacityType::HEAVY;
         break;
     default:
-        std::cout << "Invalid choice. Defaulting to Mini." << std::endl;
+        cout << "Invalid choice. Defaulting to Mini." << endl;
         capacityType = CapacityType::MINI;
         break;
     }
@@ -119,19 +123,19 @@ void UserInterface::addDrone(AutoDeliver& autoDeliver) {
 }
 
 void UserInterface::editDrone(AutoDeliver& autoDeliver) {
-    std::string id, newId, destination;
+    string id, newId, destination;
     int hours, minutes;
     int capacityTypeChoice;
-    std::cout << "Enter Drone ID to Edit: ";
-    std::cin >> id;
-    std::cout << "Enter New Drone ID: ";
-    std::cin >> newId;
-    std::cout << "Enter New Destination: ";
-    std::cin >> destination;
-    std::cout << "Enter New Time (hours minutes): ";
-    std::cin >> hours >> minutes;
-    std::cout << "Choose New Capacity Type (1: Mini, 2: Maxi, 3: Heavy): ";
-    std::cin >> capacityTypeChoice;
+    cout << "Enter Drone ID to Edit: ";
+    cin >> id;
+    cout << "Enter New Drone ID: ";
+    cin >> newId;
+    cout << "Enter New Destination: ";
+    cin >> destination;
+    cout << "Enter New Time (hours minutes): ";
+    cin >> hours >> minutes;
+    cout << "Choose New Capacity Type (1: Mini, 2: Maxi, 3: Heavy): ";
+    cin >> capacityTypeChoice;
     CapacityType capacityType;
     switch (capacityTypeChoice) {
     case 1:
@@ -144,7 +148,7 @@ void UserInterface::editDrone(AutoDeliver& autoDeliver) {
         capacityType = CapacityType::HEAVY;
         break;
     default:
-        std::cout << "Invalid choice. Defaulting to Mini." << std::endl;
+        cout << "Invalid choice. Defaulting to Mini." << endl;
         capacityType = CapacityType::MINI;
         break;
     }
@@ -152,51 +156,52 @@ void UserInterface::editDrone(AutoDeliver& autoDeliver) {
 }
 
 void UserInterface::deleteDrone(AutoDeliver& autoDeliver) {
-    std::string id;
-    std::cout << "Enter Drone ID to Delete: ";
-    std::cin >> id;
+    string id;
+    cout << "Enter Drone ID to Delete: ";
+    cin >> id;
     autoDeliver.deleteDrone(id);
 }
 
 void UserInterface::addPackage(AutoDeliver& autoDeliver) {
-    std::string id, destination;
+    string id, destination;
     int hours, minutes;
-    std::cout << "Enter Package ID: ";
-    std::cin >> id;
-    std::cout << "Enter Destination: ";
-    std::cin >> destination;
-    std::cout << "Enter Time (hours minutes): ";
-    std::cin >> hours >> minutes;
+    cout << "Enter Package ID: ";
+    cin >> id;
+    cout << "Enter Destination: ";
+    cin >> destination;
+    cout << "Enter Time (hours minutes): ";
+    cin >> hours >> minutes;
     autoDeliver.addPackage(Package(id, destination, hours, minutes));
 }
 
 void UserInterface::editPackage(AutoDeliver& autoDeliver) {
-    std::string id, newId, destination;
+    string id, newId, destination;
     int hours, minutes;
-    std::cout << "Enter Package ID to Edit: ";
-    std::cin >> id;
-    std::cout << "Enter New Package ID: ";
-    std::cin >> newId;
-    std::cout << "Enter New Destination: ";
-    std::cin >> destination;
-    std::cout << "Enter New Time (hours minutes): ";
-    std::cin >> hours >> minutes;
+    cout << "Enter Package ID to Edit: ";
+    cin >> id;
+    cout << "Enter New Package ID: ";
+    cin >> newId;
+    cout << "Enter New Destination: ";
+    cin >> destination;
+    cout << "Enter New Time (hours minutes): ";
+    cin >> hours >> minutes;
     autoDeliver.editPackage(id, Package(newId, destination, hours, minutes));
 }
 
 void UserInterface::deletePackage(AutoDeliver& autoDeliver) {
-    std::string id;
-    std::cout << "Enter Package ID to Delete: ";
-    std::cin >> id;
+    string id;
+    cout << "Enter Package ID to Delete: ";
+    cin >> id;
     autoDeliver.deletePackage(id);
 }
 
 void UserInterface::generateAndDisplayPlan(AutoDeliver& autoDeliver) {
     int planChoice;
-    cout << "Display and Plan Options" << endl;
+    cout << "===== Display and Plan Options =====" << endl;
     cout << "1. By Drone Capacity" << endl;
     cout << "2. Optimised plan" << endl;
-    cout << "3. Display Drones and Packages" << endl;
+    cout << "3. Display NotAtFullLoadCapacity" << endl;
+    cout << "4. Display NotAssignedToDrone" << endl;
     cout << "Enter your choice: ";
 
     if (!(cin >> planChoice)) {
@@ -208,24 +213,26 @@ void UserInterface::generateAndDisplayPlan(AutoDeliver& autoDeliver) {
     else {
         switch (planChoice) {
         case 1:
-            autoDeliver.generateMatchingPlan_OptimizeCapacity();
+            autoDeliver.generateMatchingPlan_OptimizeCapacity("capacity_plan.txt");
             break;
         case 2:
             autoDeliver.generateMatchingPlan_MinimiseDrones();
             break;
         case 3:
             autoDeliver.displayDrones_NotAtFullLoadCapacity();
+            break;
+        case 4:    
             autoDeliver.displayPackages_NotAssignedToDrone();
             break;
         default:
             cout << "Invalid choice for matching plan generation." << endl;
             break;
         }
-
+        
     }
 }
 
 void UserInterface::savePlan(AutoDeliver& autoDeliver) {
     autoDeliver.saveMatchingPlan("matching_plan.txt");
-    std::cout << "Matching plan saved to matching_plan.txt." << std::endl;
+    std::cout << "Matching plan saved to matching_plan.txt." << endl;
 }

@@ -1,4 +1,5 @@
 // DataManager.h
+
 #ifndef DATAMANAGER_H
 #define DATAMANAGER_H
 
@@ -10,8 +11,8 @@ using namespace std;
 
 class DataManager {
 private:
-    std::string id;
-    std::string destination;
+    string id;
+    string destination;
     Time timing; // Use the Time class for timing
 
 public:
@@ -21,6 +22,7 @@ public:
     const string& getId() const;
     const string& getDestination() const;
     const Time& getTiming() const;
+
     void setId(const std::string& newId);
     void setDestination(const std::string& newDestination);
     void setTiming(int hours, int minutes);

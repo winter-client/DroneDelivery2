@@ -1,12 +1,17 @@
 // Drone.cpp
-#include "Drone.h"
+
+
 #include <iostream>
 
-Drone::Drone(const std::string& id, const std::string& destination, int hours, int minutes, CapacityType capacityType)
+using namespace std;
+
+#include "Drone.h"
+
+Drone::Drone(const string& id, const string& destination, int hours, int minutes, CapacityType capacityType)
     : DataManager(id, destination, hours, minutes), capacityType(capacityType) {}
 
 void Drone::display() const {
-    std::string capacity;
+    string capacity;
     switch (capacityType) {
     case CapacityType::MINI:
         capacity = "Mini (2)";
@@ -22,8 +27,8 @@ void Drone::display() const {
         break;
     }
 
-    std::cout << "Drone ID: " << getId() << ", Destination: " << getDestination()
-        << ", Timing: " << getTiming().toString() << ", Capacity: " << capacity << " kg" << std::endl;
+    cout << "Drone ID: " << getId() << ", Destination: " << getDestination()
+        << ", Timing: " << getTiming().toString() << ", Capacity: " << capacity  << endl;
 }
 
 CapacityType Drone::getCapacityType() const {

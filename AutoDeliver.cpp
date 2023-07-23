@@ -74,49 +74,57 @@ void AutoDeliver::readFiles(const string& droneFilePath, const string& packageFi
 }
 
 
-void AutoDeliver::generateMatchingPlan_OptimizeCapacity() {
+void AutoDeliver::generateMatchingPlan_OptimizeCapacity(const std::string& outputFilePath) {
     // Sort drones by capacity in descending order (heaviest to lightest)
     sort(drones.begin(), drones.end(), [](const Drone& a, const Drone& b) {
         return a.getCapacityType() > b.getCapacityType();
         });
 
-    // Create a map to store the best match for each package
-    std::unordered_map<string, Drone> packageToDroneMap;
+    // Create a map to store the assigned package count for each drone
+    std::unordered_map<std::string, int> droneAssignedCount;
+    for (const auto& drone : drones) {
+        droneAssignedCount[drone.getId()] = 0;
+    }
 
+    // Create a map to store the matching of packages to drones
+    std::unordered_map<std::string, std::string> packageToDroneMap;
+
+    // Create a vector to track unassigned packages
+    std::vector<Package> unassignedPackages = packages;
+
+    // Iterate through packages and assign them to drones based on capacity
     for (const auto& package : packages) {
-        // Find the first drone with matching destination and arrival window
-        auto it = std::find_if(drones.begin(), drones.end(), [&](const Drone& drone) {
-            int droneTotalMinutes = drone.getTiming().getTotalMinutes();
-            int packageTotalMinutes = package.getTiming().getTotalMinutes();
-            return drone.getDestination() == package.getDestination() &&
-                (droneTotalMinutes <= packageTotalMinutes && packageTotalMinutes - droneTotalMinutes <= 20);
-            });
+        for (auto& drone : drones) {
+            if (drone.getDestination() == package.getDestination() &&
+                droneAssignedCount[drone.getId()] < static_cast<int>(drone.getCapacityType())) {
+                // Assign the package to the drone
+                packageToDroneMap[package.getId()] = drone.getId();
+                droneAssignedCount[drone.getId()]++;
 
-        if (it != drones.end()) {
-            packageToDroneMap[package.getId()] = *it;
-            drones.erase(it); // Remove the selected drone from the available drones
+                // Mark the package as assigned
+                auto it = std::find_if(unassignedPackages.begin(), unassignedPackages.end(),
+                    [&](const Package& p) {
+                        return p.getId() == package.getId();
+                    });
+                if (it != unassignedPackages.end()) {
+                    unassignedPackages.erase(it);
+                }
+
+                // Exit the inner loop and go to the next package
+                break;
+            }
         }
     }
 
     // Display the matching plan
     for (const auto& pair : packageToDroneMap) {
-        const Drone& drone = pair.second;
-        const Package& package = packages[std::distance(packages.begin(), std::find_if(packages.begin(), packages.end(),
-            [&](const Package& p) {
-                return p.getId() == pair.first;
-            }))];
-
-        std::cout << "Drone: " << drone.getId() << " -> Package: " << package.getId() << std::endl;
+        std::cout << "Drone: " << pair.second << " -> Package: " << pair.first << std::endl;
     }
 }
 
 
-void AutoDeliver::generateMatchingPlan_MinimiseDrones() {
-    // Sort drones by capacity in descending order (heaviest to lightest)
-    sort(drones.begin(), drones.end(), [](const Drone& a, const Drone& b) {
-        return a.getCapacityType() > b.getCapacityType();
-        });
 
+void AutoDeliver::generateMatchingPlan_MinimiseDrones() {
     // Create a map to store the best match for each package
     unordered_map<string, Drone> packageToDroneMap;
 
@@ -146,6 +154,7 @@ void AutoDeliver::generateMatchingPlan_MinimiseDrones() {
         std::cout << "Drone: " << drone.getId() << " -> Package: " << package.getId() << std::endl;
     }
 }
+
 
 void AutoDeliver::displayDrones_NotAtFullLoadCapacity() {
     std::cout << "========== Drones that are not at full load capacity ==========" << std::endl;
@@ -179,10 +188,9 @@ void AutoDeliver::displayDrones_NotAtFullLoadCapacity() {
     }
 }
 
-
 void AutoDeliver::displayPackages_NotAssignedToDrone() {
-    std::cout << "========== Packages that are not assigned to any drone ==========" << std::endl;
-    for (const auto& package : packages) {
+    cout << "========== Packages that are not assigned to any drone ==========" << endl;
+    for (const auto& package : unassignedPackages) { // Use unassignedPackages instead of packages
         bool isPackageAssigned = false;
         for (const auto& drone : drones) {
             if (package.getDestination() == drone.getDestination()) {
@@ -192,8 +200,8 @@ void AutoDeliver::displayPackages_NotAssignedToDrone() {
         }
 
         if (!isPackageAssigned) {
-            std::cout << "Package ID: " << package.getId() << ", Destination: " << package.getDestination()
-                << ", Timing: " << package.getTiming().toString() << std::endl;
+            cout << "Package ID: " << package.getId() << ", Destination: " << package.getDestination()
+                << ", Timing: " << package.getTiming().toString() << endl;
         }
     }
 }
@@ -225,6 +233,7 @@ void AutoDeliver::saveMatchingPlan(const std::string& outputFilePath) {
 
     outputFile.close();
 }
+
 
 void AutoDeliver::writeDronesToFile(const string& droneFilePath, WriteMode mode) {
     std::ofstream droneFile;
@@ -325,7 +334,6 @@ void AutoDeliver::editDrone(const string& droneIdToEdit, const Drone& newDrone) 
     }
 }
 
-
 void AutoDeliver::deleteDrone(const std::string& droneId) {
     // Find the drone with the given ID in the vector
     auto it = find_if(drones.begin(), drones.end(), [&](const Drone& drone) {
@@ -347,6 +355,7 @@ void AutoDeliver::deleteDrone(const std::string& droneId) {
 
 void AutoDeliver::addPackage(const Package& newPackage) {
     packages.push_back(newPackage);
+    unassignedPackages.push_back(newPackage);
     writePackagesToFile("packages.txt", WriteMode::Append); // Save changes to the package file
 }
 
