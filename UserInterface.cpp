@@ -9,7 +9,6 @@ using namespace std;
 void UserInterface::start() {
     AutoDeliver autoDeliver;
 
-    // Load data from files
     string droneFilePath, packageFilePath;
 
     cout << "Enter the file path for drones: ";
@@ -26,6 +25,7 @@ void UserInterface::start() {
         return;
     }
 
+    // Load data from files
     autoDeliver.readFiles(droneFilePath, packageFilePath);
 
     // User interface loop
@@ -234,5 +234,5 @@ void UserInterface::generateAndDisplayPlan(AutoDeliver& autoDeliver) {
 
 void UserInterface::savePlan(AutoDeliver& autoDeliver) {
     autoDeliver.saveMatchingPlan("matching_plan.txt");
-    std::cout << "Matching plan saved to matching_plan.txt." << endl;
+    cout << "Matching plan saved to matching_plan.txt." << endl;
 }

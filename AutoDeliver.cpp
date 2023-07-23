@@ -10,13 +10,13 @@ AutoDeliver::AutoDeliver() {}
 
 void AutoDeliver::readFiles(const string& droneFilePath, const string& packageFilePath) {
     // Clear existing vectors before populating them
-    drones.clear();
-    packages.clear();
+    //drones.clear();
+    //packages.clear();
 
     // Read drone data from the file and populate the drones vector
     ifstream droneFile(droneFilePath);
     if (!droneFile.is_open()) {
-        cerr << "Error: Unable to open the drone data file." << endl;
+        cout << "Error: Unable to open the drone data file." << endl;
         return;
     }
 
@@ -49,6 +49,8 @@ void AutoDeliver::readFiles(const string& droneFilePath, const string& packageFi
     }
 
     droneFile.close();
+
+
 
     // Read package data from the file and populate the packages vector
     ifstream packageFile(packageFilePath);
@@ -255,26 +257,54 @@ void AutoDeliver::writeDronesToFile(const string& droneFilePath, WriteMode mode)
         return;
     }
 
-    // Write the drone data to the output file
+    // Read the existing drone data from the file and store it in a vector
+    vector<string> existingDrones;
+    string line;
+    ifstream existingDroneFile(droneFilePath);
+    if (existingDroneFile.is_open()) {
+        while (getline(existingDroneFile, line)) {
+            existingDrones.push_back(line);
+        }
+        existingDroneFile.close();
+    }
+
+    // Write the drone data to the output file, skipping duplicates
     for (const auto& drone : drones) {
-        droneFile << drone.getId() << " " << drone.getDestination() << " "
+        // Convert the drone data to a string format for comparison
+        ostringstream oss;
+        oss << drone.getId() << " " << drone.getDestination() << " "
             << drone.getTiming().toString() << " ";
 
         switch (drone.getCapacityType()) {
         case CapacityType::MINI:
-            droneFile << "2";
+            oss << "2";
             break;
         case CapacityType::MAXI:
-            droneFile << "5";
+            oss << "5";
             break;
         case CapacityType::HEAVY:
-            droneFile << "10";
+            oss << "10";
             break;
         default:
-            droneFile << "Unknown";
+            oss << "Unknown";
             break;
         }
-        droneFile << endl;
+
+        string droneDataString = oss.str();
+
+        // Check if the drone data already exists in the file
+        bool droneExists = false;
+        for (const auto& existingDroneData : existingDrones) {
+            if (existingDroneData == droneDataString) {
+                droneExists = true;
+                break;
+            }
+        }
+
+        // If the drone does not exist in the file, append it
+        if (!droneExists) {
+            droneFile << droneDataString << endl;
+        }
     }
 
     droneFile.close();
@@ -300,10 +330,39 @@ void AutoDeliver::writePackagesToFile(const string& packageFilePath, WriteMode m
         return;
     }
 
-    // Write the package data to the output file
+    // Read the existing package data from the file and store it in a vector
+    vector<string> existingPackages;
+    string line;
+    ifstream existingPackageFile(packageFilePath);
+    if (existingPackageFile.is_open()) {
+        while (getline(existingPackageFile, line)) {
+            existingPackages.push_back(line);
+        }
+        existingPackageFile.close();
+    }
+
+    // Write the package data to the output file, skipping duplicates
     for (const auto& package : packages) {
-        packageFile << package.getId() << " " << package.getDestination() << " "
-            << package.getTiming().toString() << endl;
+        // Convert the package data to a string format for comparison
+        ostringstream oss;
+        oss << package.getId() << " " << package.getDestination() << " "
+            << package.getTiming().toString();
+
+        string packageDataString = oss.str();
+
+        // Check if the package data already exists in the file
+        bool packageExists = false;
+        for (const auto& existingPackageData : existingPackages) {
+            if (existingPackageData == packageDataString) {
+                packageExists = true;
+                break;
+            }
+        }
+
+        // If the package does not exist in the file, append it
+        if (!packageExists) {
+            packageFile << packageDataString << endl;
+        }
     }
 
     packageFile.close();

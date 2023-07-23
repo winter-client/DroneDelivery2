@@ -1,3 +1,1 @@
-D1 StopA 10:00 2
-D1 StopA 10:00 2
-D2 StopB 11:00 5
+D1 StopA 12:30 2

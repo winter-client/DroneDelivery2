@@ -1,13 +1,3 @@
-P7 StopB 11:00
-P2 StopA 10:00
-P3 StopB 11:00
-P4 StopB 11:00
-P5 StopB 11:00
-P6 StopB 11:00
-P7 StopB 11:00
-P2 StopA 10:00
-P3 StopB 11:00
-P4 StopB 11:00
-P5 StopB 11:00
-P6 StopB 11:00
-P8 StopB 11:00
+P1 StopA 12:30
+P2 StopB 17:00
+P5 StopA 12:30
