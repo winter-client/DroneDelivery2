@@ -1,5 +1,4 @@
 P1 StopA 12 0
 P2 StopB 12 0
 P3 StopC 12 0
-P4 StopC 12 0
-P10 StopG 10 0
+P5 StopH 18 0

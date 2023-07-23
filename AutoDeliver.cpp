@@ -10,8 +10,8 @@ AutoDeliver::AutoDeliver() {}
 
 void AutoDeliver::readFiles(const string& droneFilePath, const string& packageFilePath) {
     // Clear existing vectors before populating them
-    //drones.clear();
-    //packages.clear();
+    drones.clear();
+    packages.clear();
 
     // Read drone data from the file and populate the drones vector
     ifstream droneFile(droneFilePath);
@@ -194,7 +194,7 @@ void AutoDeliver::displayDrones_NotAtFullLoadCapacity() {
 
 void AutoDeliver::displayPackages_NotAssignedToDrone() {
     cout << "========== Packages that are not assigned to any drone ==========" << endl;
-    for (const auto& package : unassignedPackages) { // Use unassignedPackages instead of packages
+    for (const auto& package : packages) { // Use unassignedPackages instead of packages
         bool isPackageAssigned = false;
         for (const auto& drone : drones) {
             if (package.getDestination() == drone.getDestination()) {
